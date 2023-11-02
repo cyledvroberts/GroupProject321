@@ -4,15 +4,12 @@
  */
 package acii.illustrate;
 
-/**
- *
- * @author Cyle
- */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 public class TextCanvasView 
 {
-    TextCanvasModel Textmodel = new TextCanvasModel(100, 80);
+    
 }
