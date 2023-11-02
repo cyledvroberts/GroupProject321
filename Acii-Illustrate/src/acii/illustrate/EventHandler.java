@@ -4,10 +4,7 @@
  */
 package acii.illustrate;
 
-/**
- *
- * @author Cyle
- */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
