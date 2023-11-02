@@ -12,7 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
-public class Button 
+public class Button extends JPanel
 {
     JPanel buttonPanel = new JPanel();
     public JPanel GetPanel()
