@@ -9,13 +9,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
+import java.util.ArrayList;
 public class TextCanvasController extends JPanel
 {
     // these variables are the size of the character and
     // color arrays and used to construct the TextCanvasModel
-    private static int row = 300;
-    private static int col = 300;
-    TextCanvasModel canvas = new TextCanvasModel(row, col);
+    private static final int ROW = 200;
+    private static final int COL = 200;
+    TextCanvasModel canvas = new TextCanvasModel(ROW, COL);
+    FileManager fileManager = new FileManager();
     
     public TextCanvasController()
     {   
@@ -35,7 +37,7 @@ public class TextCanvasController extends JPanel
                 // in the arrays.
                 // repaint() is called to instantly redraw the text canvas for
                 // the user.
-                if (xPress >= 0 && xPress < row && yPress >= 0 && yPress < col) {
+                if (xPress >= 0 && xPress < ROW && yPress >= 0 && yPress < COL) {
                     canvas.setCharacter(xPress, yPress);
                     canvas.setCharacterColor(xPress, yPress);
                     repaint();
@@ -50,7 +52,7 @@ public class TextCanvasController extends JPanel
             public void mouseDragged(MouseEvent e) {
                 int xDrag = e.getX() / canvas.getCellSize();
                 int yDrag = e.getY() / canvas.getCellSize();
-                if (xDrag >= 0 && xDrag < row && yDrag >= 0 && yDrag < col) {
+                if (xDrag >= 0 && xDrag < ROW && yDrag >= 0 && yDrag < COL) {
                     canvas.setCharacter(xDrag, yDrag);
                     canvas.setCharacterColor(xDrag, yDrag);
                     repaint();
@@ -58,6 +60,38 @@ public class TextCanvasController extends JPanel
             }
         });
     }
+    
+    // function to access saveFile() from FileManager
+    public void saveCanvas(String fileName){
+        fileManager.saveFile(fileName, canvas.getCharacters(), canvas.getCharacterColors(), canvas.getBackgroundColor());    
+    }
+    
+    // function to get the saves list from fileManager
+    public ArrayList<String> getSavesList(){
+        fileManager.checkSaveFolder();
+        return fileManager.getSaves();
+    }
+    
+    // function to load a file
+    // gets a copy of the required arrays from fileManager
+    // and updates canvas appropriately
+    public void loadCanvas(String fileName){
+        fileManager.checkSaveFolder();
+        fileManager.loadFile(fileName);
+        canvas.loadCanvas(fileManager.getNewCharacterGrid(), fileManager.getNewColorGrid(), fileManager.getNewBackground());
+        System.out.println(fileManager.getNewBackground());
+    }
+    
+    public void deleteCanvas(String fileName){
+        fileManager.deleteFile(fileName);
+    }
+    
+    public boolean isInSavesList(String name){
+        String filename = name + ".txt";
+        fileManager.checkSaveFolder();
+        return fileManager.isInSaves(filename);
+    }
+    
     
     // To my understanding, paintComponent() is a built-in, under-the-hood 
     // function that redraws a component "when it needs to".
@@ -76,7 +110,7 @@ public class TextCanvasController extends JPanel
                 // in drawString() the second two parameters are the x and y
                 // starting coordinates on the screen. Starting from x and y = 0
                 // and iterating up draws the characters across the screen 
-                // in a matrix-like fashion one row at a time corresponding with the gridCharacters
+                // in a matrix-like fashion one ROW at a time corresponding with the gridCharacters
                 // array. cellSize is used to scale these coordinates so we get
                 // bigger cellSize = farther apart
                 g.drawString(String.valueOf(canvas.getCharacters()[x][y]), x * canvas.getCellSize(), y * canvas.getCellSize() + 8);
