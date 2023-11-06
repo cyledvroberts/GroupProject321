@@ -14,7 +14,7 @@ public class TextCanvasModel extends JPanel
 {
     static Color currentColor = Color.BLACK; 
     static char currentCharacter = ' ';
-    static Color backgroundColor = Color.WHITE;    
+    static Color backgroundColor = Color.white;    
     // cellSize is used to change the size of the "cells" that the characters
     // exist in. larger numbers create more space between characters and 
     // vise versa.
@@ -68,6 +68,12 @@ public class TextCanvasModel extends JPanel
     
     public void setCharacterColor(int x, int y){
         gridColors[x][y] = currentColor;
+    }
+    
+    public void loadCanvas(char[][] characters, Color[][] colors, Color background){
+        gridCharacters = characters;
+        gridColors = colors;
+        backgroundColor = background;
     }
     // getter functions
     public char getCurrentCharacter(){
