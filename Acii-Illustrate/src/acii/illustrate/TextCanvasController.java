@@ -61,6 +61,63 @@ public class TextCanvasController extends JPanel
         });
     }
     
+    public static void addColorActionListener(JButton colorSwitchButton, JFrame frame) {
+        colorSwitchButton.addActionListener(e -> {
+            TextCanvasModel.currentColor = JColorChooser.showDialog(frame, "Choose a Color", TextCanvasModel.currentColor);
+        });
+    }
+    
+    public static void addCharActionListener(JButton charSwitchButton, JFrame frame) {
+        charSwitchButton.addActionListener(e -> {
+            String input = JOptionPane.showInputDialog(frame, "Enter a character:");
+            if (input != null && !input.isEmpty()) {
+                TextCanvasModel.currentCharacter = input.charAt(0);
+            }
+        });
+    }
+    
+    public static void addBackgroundActionListener(JButton backgroundSwitchButton, JFrame frame, TextCanvasController drawingArea) {
+        backgroundSwitchButton.addActionListener(e -> {
+            TextCanvasModel.backgroundColor = (Color) JColorChooser.showDialog(frame, "Choose a Background Color", TextCanvasModel.backgroundColor);
+            drawingArea.setBackground(TextCanvasModel.backgroundColor);
+            drawingArea.repaint();
+        });
+    }
+    
+    public static void addSaveActionListener(JButton saveButton, JFrame frame, TextCanvasController drawingArea) {
+        saveButton.addActionListener (e -> {
+            String input = JOptionPane.showInputDialog(frame, "Enter the name of your canvas:");
+            if (drawingArea.isInSavesList(input)){
+                int choice = JOptionPane.showConfirmDialog(frame, "The canvas already exists. Would you like to overwrite?");
+                if (choice == 0){
+                    drawingArea.saveCanvas(input);
+                    JOptionPane.showMessageDialog(frame, "Canvas has been saved");
+                }
+            } else{
+                drawingArea.saveCanvas(input);
+                JOptionPane.showMessageDialog(frame, "Canvas has been saved");
+            }
+        });
+    }
+    
+    public static void addLoadActionListener(JButton loadButton, JPopupMenu loadMenu, TextCanvasController drawingArea) {
+        loadButton.addActionListener((ActionEvent e) -> {
+            loadMenu.removeAll();
+            Button.updateLoadMenu(loadMenu, drawingArea);
+            
+            loadMenu.show(loadButton, 0, loadButton.getHeight());
+        });
+    }
+    
+    public static void addDeleteActionListener(JButton deleteButton, JPopupMenu deleteMenu, TextCanvasController drawingArea) {
+        deleteButton.addActionListener((ActionEvent e) -> {
+            deleteMenu.removeAll();
+            Button.updateDeleteMenu(deleteMenu, drawingArea);
+            
+            deleteMenu.show(deleteButton, 0, deleteButton.getHeight());
+        });
+    }
+    
     // function to access saveFile() from FileManager
     public void saveCanvas(String fileName){
         fileManager.saveFile(fileName, canvas.getCharacters(), canvas.getCharacterColors(), canvas.getBackgroundColor());    
