@@ -10,11 +10,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 
-public class TextCanvasModel extends JPanel
+public class TextCanvasModel
 {
-    static Color currentColor = Color.BLACK; 
-    static char currentCharacter = ' ';
-    static Color backgroundColor = Color.white;    
+    private static Color currentColor = Color.BLACK; 
+    private static char currentCharacter = ' ';
+    private static Color backgroundColor = Color.white;    
     // cellSize is used to change the size of the "cells" that the characters
     // exist in. larger numbers create more space between characters and 
     // vise versa.
@@ -42,10 +42,27 @@ public class TextCanvasModel extends JPanel
             Arrays.fill(gridCharacters[i], ' ');
             Arrays.fill(gridColors[i], Color.BLACK);
         }
-        setBackground(backgroundColor);
     }
     
     // setter functions
+    
+    public void resetTextCanvas(int x, int y){
+        
+        currentCharacter = ' ';
+        currentColor = Color.black;
+        
+        for (int i = 0; i < x; i++) 
+        {
+            // Arrays.fill() is from the java.util.Arrays library.
+            // It completely fills an array with the specified value.
+            // right here, each loop fills the i'th row with the value.
+            // the array of characters is filled with spaces.
+            // the array of colors is filled with black.
+            Arrays.fill(gridCharacters[i], ' ');
+            Arrays.fill(gridColors[i], Color.BLACK);
+        }
+    }
+    
     public void setCurrentCharacter(char n){
         currentCharacter = n;
     }
