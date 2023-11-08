@@ -16,8 +16,9 @@ public class TextCanvasController extends JPanel
     // color arrays and used to construct the TextCanvasModel
     private static final int ROW = 200;
     private static final int COL = 200;
-    TextCanvasModel canvas = new TextCanvasModel(ROW, COL);
-    FileManager fileManager = new FileManager();
+    private static TextCanvasModel canvas = new TextCanvasModel(ROW, COL);
+    private static FileManager fileManager = new FileManager();
+    private static Button button = new Button();
     
     public TextCanvasController()
     {   
@@ -61,60 +62,79 @@ public class TextCanvasController extends JPanel
         });
     }
     
-    public static void addColorActionListener(JButton colorSwitchButton, JFrame frame) {
+    public void addColorActionListener(JButton colorSwitchButton, JFrame frame) {
         colorSwitchButton.addActionListener(e -> {
-            TextCanvasModel.currentColor = JColorChooser.showDialog(frame, "Choose a Color", TextCanvasModel.currentColor);
+            canvas.setCurrentColor(JColorChooser.showDialog(frame, "Choose a Color", canvas.getCurrentColor()));
         });
     }
     
-    public static void addCharActionListener(JButton charSwitchButton, JFrame frame) {
+    public void addCharActionListener(JButton charSwitchButton, JFrame frame) {
         charSwitchButton.addActionListener(e -> {
             String input = JOptionPane.showInputDialog(frame, "Enter a character:");
             if (input != null && !input.isEmpty()) {
-                TextCanvasModel.currentCharacter = input.charAt(0);
+                canvas.setCurrentCharacter(input.charAt(0));
             }
         });
     }
     
-    public static void addBackgroundActionListener(JButton backgroundSwitchButton, JFrame frame, TextCanvasController drawingArea) {
+    public void addBackgroundActionListener(JButton backgroundSwitchButton, JFrame frame, TextCanvasController drawingArea) {
         backgroundSwitchButton.addActionListener(e -> {
-            TextCanvasModel.backgroundColor = (Color) JColorChooser.showDialog(frame, "Choose a Background Color", TextCanvasModel.backgroundColor);
-            drawingArea.setBackground(TextCanvasModel.backgroundColor);
+            canvas.setBackgroundColor((Color) JColorChooser.showDialog(frame, "Choose a Background Color", canvas.getBackgroundColor()));
+            drawingArea.setBackground(canvas.getBackgroundColor());
             drawingArea.repaint();
         });
     }
     
-    public static void addSaveActionListener(JButton saveButton, JFrame frame, TextCanvasController drawingArea) {
-        saveButton.addActionListener (e -> {
+    public void addSaveMenuItemActionListener(JMenuItem saveItem, JFrame frame, TextCanvasController drawingArea) {
+        saveItem.addActionListener (e -> {
             String input = JOptionPane.showInputDialog(frame, "Enter the name of your canvas:");
-            if (drawingArea.isInSavesList(input)){
-                int choice = JOptionPane.showConfirmDialog(frame, "The canvas already exists. Would you like to overwrite?");
-                if (choice == 0){
+            if (input != null){
+                if (drawingArea.isInSavesList(input)){
+                    int choice = JOptionPane.showConfirmDialog(frame, "The canvas already exists. Would you like to overwrite?");
+                    if (choice == 0){
                     drawingArea.saveCanvas(input);
                     JOptionPane.showMessageDialog(frame, "Canvas has been saved");
-                }
-            } else{
+                    }
+                }else {
                 drawingArea.saveCanvas(input);
                 JOptionPane.showMessageDialog(frame, "Canvas has been saved");
+                }
             }
         });
     }
     
-    public static void addLoadActionListener(JButton loadButton, JPopupMenu loadMenu, TextCanvasController drawingArea) {
-        loadButton.addActionListener((ActionEvent e) -> {
-            loadMenu.removeAll();
-            Button.updateLoadMenu(loadMenu, drawingArea);
+    public void addSaveButtonActionListener(JButton saveButton, JPopupMenu saveMenu, TextCanvasController drawingArea, JFrame frame) {
+        saveButton.addActionListener( e -> {
+            saveMenu.removeAll();
+            Button.updateSaveMenu(saveMenu, drawingArea, frame);
             
-            loadMenu.show(loadButton, 0, loadButton.getHeight());
+            saveMenu.show(saveButton, 10, saveButton.getHeight());
         });
     }
     
-    public static void addDeleteActionListener(JButton deleteButton, JPopupMenu deleteMenu, TextCanvasController drawingArea) {
-        deleteButton.addActionListener((ActionEvent e) -> {
-            deleteMenu.removeAll();
-            Button.updateDeleteMenu(deleteMenu, drawingArea);
+    public void addLoadActionListener(JButton loadButton, JPopupMenu loadMenu, TextCanvasController drawingArea, JFrame frame) {
+        loadButton.addActionListener( e -> {
+            loadMenu.removeAll();
+            Button.updateLoadMenu(loadMenu, drawingArea, frame);
             
-            deleteMenu.show(deleteButton, 0, deleteButton.getHeight());
+            loadMenu.show(loadButton, 10, loadButton.getHeight());
+        });
+    }
+    
+    public void addDeleteActionListener(JButton deleteButton, JPopupMenu deleteMenu, TextCanvasController drawingArea, JFrame frame) {
+        deleteButton.addActionListener( e -> {
+            deleteMenu.removeAll();
+            Button.updateDeleteMenu(deleteMenu, drawingArea, frame);
+            
+            deleteMenu.show(deleteButton, 10, deleteButton.getHeight());
+        });
+    }
+    
+    public void addResetActionListener(JButton resetButton, TextCanvasController drawingArea, JFrame frame){
+        resetButton.addActionListener(e -> {
+            canvas.resetTextCanvas(ROW, COL);
+            setBackground(Color.white);
+            repaint();
         });
     }
     
@@ -129,6 +149,10 @@ public class TextCanvasController extends JPanel
         return fileManager.getSaves();
     }
     
+    // function to get the background color from TextCanvasModel
+    public Color getBackgroundColor(){
+        return canvas.getBackgroundColor();
+    }
     // function to load a file
     // gets a copy of the required arrays from fileManager
     // and updates canvas appropriately
@@ -136,7 +160,7 @@ public class TextCanvasController extends JPanel
         fileManager.checkSaveFolder();
         fileManager.loadFile(fileName);
         canvas.loadCanvas(fileManager.getNewCharacterGrid(), fileManager.getNewColorGrid(), fileManager.getNewBackground());
-        System.out.println(fileManager.getNewBackground());
+        repaint();
     }
     
     public void deleteCanvas(String fileName){
