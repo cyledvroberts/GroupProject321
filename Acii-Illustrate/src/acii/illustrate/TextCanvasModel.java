@@ -5,9 +5,7 @@
 package acii.illustrate;
 
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.Arrays;
 
 public class TextCanvasModel
@@ -60,6 +58,44 @@ public class TextCanvasModel
             // the array of colors is filled with black.
             Arrays.fill(gridCharacters[i], ' ');
             Arrays.fill(gridColors[i], Color.BLACK);
+        }
+    }
+    
+    // function used for erasing
+    public void characterEraser(int x, int y, String size){
+        
+        if (size == "Small"){
+            gridCharacters[x][y] = currentCharacter;
+        }
+        if (size == "Medium"){
+            gridCharacters[x][y + 1] = currentCharacter;
+            gridCharacters[x - 1][y] = currentCharacter;
+            gridCharacters[x][y] = currentCharacter;
+            gridCharacters[x + 1][y] = currentCharacter;
+            gridCharacters[x][y - 1] = currentCharacter;    
+        }
+        if (size == "Large"){
+            gridCharacters[x - 1][y + 2] = currentCharacter;
+            gridCharacters[x][y + 2] = currentCharacter;
+            gridCharacters[x + 1][y + 2] = currentCharacter;
+            gridCharacters[x - 2][y + 1] = currentCharacter;
+            gridCharacters[x - 1][y + 1] = currentCharacter;
+            gridCharacters[x][y + 1] = currentCharacter;
+            gridCharacters[x + 1][y + 1] = currentCharacter;
+            gridCharacters[x + 2][y + 1] = currentCharacter;
+            gridCharacters[x - 2][y] = currentCharacter;
+            gridCharacters[x - 1][y] = currentCharacter;
+            gridCharacters[x][y] = currentCharacter;
+            gridCharacters[x + 1][y] = currentCharacter;
+            gridCharacters[x + 2][y] = currentCharacter;
+            gridCharacters[x - 2][y - 1] = currentCharacter;
+            gridCharacters[x - 1][y - 1] = currentCharacter;
+            gridCharacters[x][y - 1] = currentCharacter;
+            gridCharacters[x + 1][y - 1] = currentCharacter;
+            gridCharacters[x + 2][y - 1] = currentCharacter;
+            gridCharacters[x - 1][y - 2] = currentCharacter;
+            gridCharacters[x][y - 2] = currentCharacter;
+            gridCharacters[x + 1][y - 2] = currentCharacter;   
         }
     }
     

@@ -17,12 +17,29 @@ public class Button extends JPanel
 {
      public static JPanel createButtons(JFrame frame, TextCanvasController drawingArea)
      {
-     // creates a button for changing the text colors using an action listener.
+        // creates a button for changing the text colors using an action listener.
         // JColorChooser.showDialog() brings up a built-in window that lets the user 
         // select a color. This is stored in the currentColor variable
         JButton colorSwitchButton = new JButton("Color");
         drawingArea.addColorActionListener(colorSwitchButton, frame);
-
+        
+        // create an eraser button with a popupmenu and menuItems
+        JButton eraserButton = new JButton("Eraser");
+        JPopupMenu eraserMenu = new JPopupMenu();
+        JMenuItem eraserSmall = new JMenuItem("Small");
+        JMenuItem eraserMedium = new JMenuItem("Medium");
+        JMenuItem eraserLarge = new JMenuItem("Large");
+        
+        // add the menu itmes to the menu
+        eraserMenu.add(eraserSmall);
+        eraserMenu.add(eraserMedium);
+        eraserMenu.add(eraserLarge);
+        
+        // add action listeners
+        drawingArea.addEraserItemActionListener(eraserSmall, eraserMedium, eraserLarge);
+        drawingArea.addEraserButtonActionListener(eraserMenu, eraserButton);
+        
+        
         // creates a button for changing the character using an action listener.
         // JOptionPane.showInputDialog() brings up a built-in window that lets the 
         // user enter a character. right now it allows any string input but only
@@ -63,8 +80,9 @@ public class Button extends JPanel
         // this stuff creates a jpanel for the buttons
         // and then adds it to the frame. 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(7, 1));
+        buttonPanel.setLayout(new GridLayout(8, 1));
         buttonPanel.add(charSwitchButton);
+        buttonPanel.add(eraserButton);
         buttonPanel.add(colorSwitchButton); 
         buttonPanel.add(backgroundSwitchButton);
         buttonPanel.add(saveButton);
@@ -91,6 +109,7 @@ public class Button extends JPanel
                     JOptionPane.showMessageDialog(frame, "Loading " + name.substring(0, name.length() - 4));
                     drawingArea.loadCanvas(name);
                     drawingArea.setBackground(drawingArea.getBackgroundColor());
+                    drawingArea.setCurrentCanvas(name);
                 });
                 menu.add(menuItem);
             }
@@ -110,6 +129,11 @@ public class Button extends JPanel
                 menuItem.addActionListener ( e -> {
                     JOptionPane.showMessageDialog(frame, "Deleting " + name.substring(0, name.length() - 4));
                     drawingArea.deleteCanvas(name);
+                    if (name.equals(drawingArea.getCurrentCanvas())){
+                        drawingArea.resetTextCanvas();
+                        drawingArea.setBackground(Color.white);
+                        drawingArea.repaint();
+                    }
                 });
                 menu.add(menuItem);
             }
@@ -126,6 +150,7 @@ public class Button extends JPanel
                 menuItem.addActionListener ( e -> {
                     JOptionPane.showMessageDialog(frame, "Overwriting " + name.substring(0, name.length() - 4));
                     drawingArea.saveCanvas(name.substring(0, name.length() - 4));
+                    drawingArea.setCurrentCanvas(name);
                 });
                 menu.add(menuItem);
             }
