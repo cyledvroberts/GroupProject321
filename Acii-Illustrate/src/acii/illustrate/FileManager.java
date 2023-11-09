@@ -14,7 +14,7 @@ public class FileManager{
     
     // list that holds the names of all the save files
     private ArrayList<String> saves = new ArrayList<String>();
-    
+     
     // holds temporary values
     // used in getter functions to transfer
     // saved file data to other parts of the program
