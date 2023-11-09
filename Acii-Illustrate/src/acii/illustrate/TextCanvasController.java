@@ -8,6 +8,7 @@ package acii.illustrate;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 import java.util.Arrays;
 import java.util.ArrayList;
 public class TextCanvasController extends JPanel
@@ -16,12 +17,21 @@ public class TextCanvasController extends JPanel
     // color arrays and used to construct the TextCanvasModel
     private static final int ROW = 200;
     private static final int COL = 200;
+    
     private static TextCanvasModel canvas = new TextCanvasModel(ROW, COL);
     private static FileManager fileManager = new FileManager();
     private static Button button = new Button();
     
+    // variable to store the name of a canvas
+    // used when saving and deleting in order to reset the
+    // current canvas on the screen if it gets deleted
+    private String currentCanvas;
+    private String eraserSize;
+    private boolean eraser = false;
+    
     public TextCanvasController()
     {   
+        
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -39,7 +49,11 @@ public class TextCanvasController extends JPanel
                 // repaint() is called to instantly redraw the text canvas for
                 // the user.
                 if (xPress >= 0 && xPress < ROW && yPress >= 0 && yPress < COL) {
-                    canvas.setCharacter(xPress, yPress);
+                    if (eraser == true){
+                        canvas.characterEraser(xPress, yPress, eraserSize);
+                    }else{
+                        canvas.setCharacter(xPress, yPress);
+                    }
                     canvas.setCharacterColor(xPress, yPress);
                     repaint();
                 }
@@ -54,7 +68,11 @@ public class TextCanvasController extends JPanel
                 int xDrag = e.getX() / canvas.getCellSize();
                 int yDrag = e.getY() / canvas.getCellSize();
                 if (xDrag >= 0 && xDrag < ROW && yDrag >= 0 && yDrag < COL) {
-                    canvas.setCharacter(xDrag, yDrag);
+                    if (eraser == true){
+                        canvas.characterEraser(xDrag, yDrag, eraserSize);
+                    }else{
+                        canvas.setCharacter(xDrag, yDrag);
+                    }
                     canvas.setCharacterColor(xDrag, yDrag);
                     repaint();
                 }
@@ -62,14 +80,18 @@ public class TextCanvasController extends JPanel
         });
     }
     
+    // functions to add action listeners for buttons****************************
+    
     public void addColorActionListener(JButton colorSwitchButton, JFrame frame) {
         colorSwitchButton.addActionListener(e -> {
+            eraser = false;
             canvas.setCurrentColor(JColorChooser.showDialog(frame, "Choose a Color", canvas.getCurrentColor()));
         });
     }
     
     public void addCharActionListener(JButton charSwitchButton, JFrame frame) {
         charSwitchButton.addActionListener(e -> {
+            eraser = false;
             String input = JOptionPane.showInputDialog(frame, "Enter a character:");
             if (input != null && !input.isEmpty()) {
                 canvas.setCurrentCharacter(input.charAt(0));
@@ -77,11 +99,35 @@ public class TextCanvasController extends JPanel
         });
     }
     
+    public void addEraserItemActionListener(JMenuItem eraserSmall, JMenuItem eraserMedium, JMenuItem eraserLarge){
+        eraserSmall.addActionListener (e -> {
+           eraser = true;
+           eraserSize = "Small";
+           canvas.setCurrentCharacter(' ');
+        });
+        eraserMedium.addActionListener (e -> {
+           eraser = true;
+           eraserSize = "Medium";
+           canvas.setCurrentCharacter(' ');
+        });
+        eraserLarge.addActionListener (e -> {
+           eraser = true;
+           eraserSize = "Large";
+           canvas.setCurrentCharacter(' ');
+        });
+    }
+    
+    public void addEraserButtonActionListener(JPopupMenu menu, JButton eraserButton){
+        eraserButton.addActionListener( e -> {
+            menu.show(eraserButton, 10, eraserButton.getHeight());
+        });
+    }
+    
     public void addBackgroundActionListener(JButton backgroundSwitchButton, JFrame frame, TextCanvasController drawingArea) {
         backgroundSwitchButton.addActionListener(e -> {
+            eraser = false;
             canvas.setBackgroundColor((Color) JColorChooser.showDialog(frame, "Choose a Background Color", canvas.getBackgroundColor()));
-            drawingArea.setBackground(canvas.getBackgroundColor());
-            drawingArea.repaint();
+            updateBackground();
         });
     }
     
@@ -94,10 +140,12 @@ public class TextCanvasController extends JPanel
                     if (choice == 0){
                     drawingArea.saveCanvas(input);
                     JOptionPane.showMessageDialog(frame, "Canvas has been saved");
+                    setCurrentCanvas(input + ".txt"); 
                     }
                 }else {
                 drawingArea.saveCanvas(input);
                 JOptionPane.showMessageDialog(frame, "Canvas has been saved");
+                setCurrentCanvas(input + ".txt");
                 }
             }
         });
@@ -132,6 +180,7 @@ public class TextCanvasController extends JPanel
     
     public void addResetActionListener(JButton resetButton, TextCanvasController drawingArea, JFrame frame){
         resetButton.addActionListener(e -> {
+            eraser = false;
             canvas.resetTextCanvas(ROW, COL);
             setBackground(Color.white);
             repaint();
@@ -143,17 +192,52 @@ public class TextCanvasController extends JPanel
         fileManager.saveFile(fileName, canvas.getCharacters(), canvas.getCharacterColors(), canvas.getBackgroundColor());    
     }
     
+    // Getters******************************************************************
     // function to get the saves list from fileManager
     public ArrayList<String> getSavesList(){
         fileManager.checkSaveFolder();
         return fileManager.getSaves();
     }
     
+    // function to get the most recently opened canvas
+    public String getCurrentCanvas(){
+        return currentCanvas;
+    }
+    
     // function to get the background color from TextCanvasModel
     public Color getBackgroundColor(){
         return canvas.getBackgroundColor();
     }
-    // function to load a file
+    
+    // Check if the saves list contains a certain file name
+    public boolean isInSavesList(String name){
+        String filename = name + ".txt";
+        fileManager.checkSaveFolder();
+        return fileManager.isInSaves(filename);
+    }
+    
+    // Setters******************************************************************
+    // function to set the most recently loaded save
+    public void setCurrentCanvas(String name){
+        currentCanvas = name;
+    }
+    
+    // function to reset the text canvas using a TextCanvasController object
+    public void resetTextCanvas(){
+        canvas.resetTextCanvas(ROW, COL);
+    }
+    
+    public void setBackgroundColor(Color color){
+        canvas.setBackgroundColor(color);
+    }
+    // function to update the background color
+    public void updateBackground(){
+        setBackground(canvas.getBackgroundColor());
+        repaint();
+    }
+    
+    // Additional functions*****************************************************
+    // function to load a file using a TextCanvasController object
     // gets a copy of the required arrays from fileManager
     // and updates canvas appropriately
     public void loadCanvas(String fileName){
@@ -163,17 +247,11 @@ public class TextCanvasController extends JPanel
         repaint();
     }
     
+    // Function to delete a file using a TextCanvasController object
     public void deleteCanvas(String fileName){
         fileManager.deleteFile(fileName);
     }
-    
-    public boolean isInSavesList(String name){
-        String filename = name + ".txt";
-        fileManager.checkSaveFolder();
-        return fileManager.isInSaves(filename);
-    }
-    
-    
+  
     // To my understanding, paintComponent() is a built-in, under-the-hood 
     // function that redraws a component "when it needs to".
     // I think the repaint() function utilizes it for certain things.
