@@ -113,7 +113,7 @@ public class FileManager{
     
     // getters
     public ArrayList getSaves(){
-        checkSaveFolder();
+        checkSaveFolder();  
         return saves;
     }
     
