@@ -64,38 +64,154 @@ public class TextCanvasModel
     // function used for erasing
     public void characterEraser(int x, int y, String size){
         
+        // used for detecting if out of bounds
+        int numRows = gridCharacters.length;
+        int numCols = gridCharacters[0].length;
+        
         if (size == "Small"){
             gridCharacters[x][y] = currentCharacter;
         }
+        
         if (size == "Medium"){
-            gridCharacters[x][y + 1] = currentCharacter;
-            gridCharacters[x - 1][y] = currentCharacter;
-            gridCharacters[x][y] = currentCharacter;
-            gridCharacters[x + 1][y] = currentCharacter;
-            gridCharacters[x][y - 1] = currentCharacter;    
+            
+            // iterates through a 5 x 5 cell around the center point
+            for (int i = -2; i <= 2; i++){
+                for (int j = -2; j <= 2; j++){
+                    // this makes sure the array index is not out of bounds
+                    if (!(x + i < 0) && !(x + i > numRows - 1) && !(y + j < 0) && !(y + j > numCols - 1)){
+                        // these if statements leave out certain cells
+                        // to make the eraser shape more circular
+                        if (x + i == x - 2 && y + j == y + 2){
+                            continue;
+                        }
+                        if (x + i == x - 2 && y + j == y - 2){
+                            continue;
+                        }
+                        if (x + i == x + 2 && y + j == y + 2){
+                            continue;
+                        }
+                        if (x + i == x + 2 && y + j == y - 2){
+                            continue;
+                        }
+                        // set remaining cells to the appropriate character
+                        gridCharacters[x + i][y + j] = currentCharacter;
+                    }
+                }
+                
+            }
+            
+//            gridCharacters[x - 1][y + 2] = currentCharacter;
+//            gridCharacters[x][y + 2] = currentCharacter;
+//            gridCharacters[x + 1][y + 2] = currentCharacter;
+//            gridCharacters[x - 2][y + 1] = currentCharacter;
+//            gridCharacters[x - 1][y + 1] = currentCharacter;
+//            gridCharacters[x][y + 1] = currentCharacter;
+//            gridCharacters[x + 1][y + 1] = currentCharacter;
+//            gridCharacters[x + 2][y + 1] = currentCharacter;
+//            gridCharacters[x - 2][y] = currentCharacter;
+//            gridCharacters[x - 1][y] = currentCharacter;
+//            gridCharacters[x][y] = currentCharacter;
+//            gridCharacters[x + 1][y] = currentCharacter;
+//            gridCharacters[x + 2][y] = currentCharacter;
+//            gridCharacters[x - 2][y - 1] = currentCharacter;
+//            gridCharacters[x - 1][y - 1] = currentCharacter;
+//            gridCharacters[x][y - 1] = currentCharacter;
+//            gridCharacters[x + 1][y - 1] = currentCharacter;
+//            gridCharacters[x + 2][y - 1] = currentCharacter;
+//            gridCharacters[x - 1][y - 2] = currentCharacter;
+//            gridCharacters[x][y - 2] = currentCharacter;
+//            gridCharacters[x + 1][y - 2] = currentCharacter;   
         }
+        
         if (size == "Large"){
-            gridCharacters[x - 1][y + 2] = currentCharacter;
-            gridCharacters[x][y + 2] = currentCharacter;
-            gridCharacters[x + 1][y + 2] = currentCharacter;
-            gridCharacters[x - 2][y + 1] = currentCharacter;
-            gridCharacters[x - 1][y + 1] = currentCharacter;
-            gridCharacters[x][y + 1] = currentCharacter;
-            gridCharacters[x + 1][y + 1] = currentCharacter;
-            gridCharacters[x + 2][y + 1] = currentCharacter;
-            gridCharacters[x - 2][y] = currentCharacter;
-            gridCharacters[x - 1][y] = currentCharacter;
-            gridCharacters[x][y] = currentCharacter;
-            gridCharacters[x + 1][y] = currentCharacter;
-            gridCharacters[x + 2][y] = currentCharacter;
-            gridCharacters[x - 2][y - 1] = currentCharacter;
-            gridCharacters[x - 1][y - 1] = currentCharacter;
-            gridCharacters[x][y - 1] = currentCharacter;
-            gridCharacters[x + 1][y - 1] = currentCharacter;
-            gridCharacters[x + 2][y - 1] = currentCharacter;
-            gridCharacters[x - 1][y - 2] = currentCharacter;
-            gridCharacters[x][y - 2] = currentCharacter;
-            gridCharacters[x + 1][y - 2] = currentCharacter;   
+            
+            // iterates through a 7 x 7 cell around the center point
+            for (int i = -3; i <= 3; i++){
+                for (int j = -3; j <= 3; j++){
+                    // this makes sure the array index is not out of bounds 
+                    if (!(x + i < 0) && !(x + i > numRows - 1) && !(y + j < 0) && !(y + j > numCols - 1)){
+                        // these if statements leave out certain cells
+                        // to make the eraser shape more circular
+                        if (x + i == x - 3 && y + j == y + 3){
+                            continue;
+                        }
+                        if (x + i == x - 2 && y + j == y + 3){
+                            continue;
+                        }
+                        if (x + i == x + 2 && y + j == y + 3){
+                            continue;
+                        }
+                        if (x + i == x + 3 && y + j == y + 3){
+                            continue;
+                        }
+                        if (x + i == x - 3 && y + j == y + 2){
+                            continue;
+                        }
+                        if (x + i == x + 3 && y + j == y + 2){
+                            continue;
+                        }
+                        if (x + i == x - 3 && y + j == y - 2){
+                            continue;
+                        }
+                        if (x + i == x + 3 && y + j == y - 2){
+                            continue;
+                        }
+                        if (x + i == x - 3 && y + j == y - 3){
+                            continue;
+                        }
+                        if (x + i == x - 2 && y + j == y - 3){
+                            continue;
+                        }
+                        if (x + i == x + 2 && y + j == y - 3){
+                            continue;
+                        }
+                        if (x + i == x + 3 && y + j == y - 3){
+                            continue;
+                        }
+                        // set remaining cells to the appropriate character
+                        gridCharacters[x + i][y + j] = currentCharacter;
+                    }
+                }
+                
+            }
+  
+//            gridCharacters[x - 1][y + 3] = currentCharacter;
+//            gridCharacters[x][y + 3] = currentCharacter;
+//            gridCharacters[x + 1][y + 3] = currentCharacter;
+//            gridCharacters[x - 2][y + 2] = currentCharacter;
+//            gridCharacters[x - 1][y + 2] = currentCharacter;
+//            gridCharacters[x][y + 2] = currentCharacter;
+//            gridCharacters[x + 1][y + 2] = currentCharacter;
+//            gridCharacters[x + 2][y + 2] = currentCharacter;
+//            gridCharacters[x - 3][y + 1] = currentCharacter;
+//            gridCharacters[x - 2][y + 1] = currentCharacter;
+//            gridCharacters[x - 1][y + 1] = currentCharacter;
+//            gridCharacters[x][y + 1] = currentCharacter;
+//            gridCharacters[x + 1][y + 1] = currentCharacter;
+//            gridCharacters[x + 2][y + 1] = currentCharacter;
+//            gridCharacters[x + 3][y + 1] = currentCharacter;
+//            gridCharacters[x - 3][y] = currentCharacter;
+//            gridCharacters[x - 2][y] = currentCharacter;
+//            gridCharacters[x - 1][y] = currentCharacter;
+//            gridCharacters[x][y] = currentCharacter;
+//            gridCharacters[x + 1][y] = currentCharacter;
+//            gridCharacters[x + 2][y] = currentCharacter;
+//            gridCharacters[x + 3][y] = currentCharacter;
+//            gridCharacters[x - 3][y - 1] = currentCharacter;
+//            gridCharacters[x - 2][y - 1] = currentCharacter;
+//            gridCharacters[x - 1][y - 1] = currentCharacter;
+//            gridCharacters[x][y - 1] = currentCharacter;
+//            gridCharacters[x + 1][y - 1] = currentCharacter;
+//            gridCharacters[x + 2][y - 1] = currentCharacter;
+//            gridCharacters[x + 3][y - 1] = currentCharacter;
+//            gridCharacters[x - 2][y - 2] = currentCharacter;
+//            gridCharacters[x - 1][y - 2] = currentCharacter;
+//            gridCharacters[x][y - 2] = currentCharacter;
+//            gridCharacters[x + 1][y - 2] = currentCharacter;
+//            gridCharacters[x + 2][y - 2] = currentCharacter;
+//            gridCharacters[x - 1][y - 3] = currentCharacter;
+//            gridCharacters[x][y - 3] = currentCharacter;
+//            gridCharacters[x + 1][y - 3] = currentCharacter;
         }
     }
     
