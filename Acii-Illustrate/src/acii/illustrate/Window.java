@@ -24,9 +24,10 @@ public class Window
         // makes sure clicking the 'x' on the window closes the app
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        // Add the text canvas to the frame
+        // Add the text canvas to the frame and set initial background color
         frame.add(drawingArea, BorderLayout.CENTER);
-
+        drawingArea.updateBackground();
+        
         JPanel buttonPanel = Button.createButtons(frame, drawingArea);
         
         frame.add(buttonPanel, BorderLayout.WEST);
