@@ -53,6 +53,9 @@ public class TextCanvasController extends JPanel
      */
     private boolean eraser = false;
     
+    private int previousX = 0;
+    private int previousY = 0;
+    
     /**
      * constructor for the TextCanvasController class, which creates the mouseListener and mouseMotionListener
      */
@@ -80,10 +83,13 @@ public class TextCanvasController extends JPanel
                         canvas.characterEraser(xPress, yPress, eraserSize);
                     }else{
                         canvas.setCharacter(xPress, yPress);
+                        canvas.nextCharacter();
                     }
                     canvas.setCharacterColor(xPress, yPress);
                     repaint();
                 }
+                previousX = xPress;
+                previousY = yPress;
             }
         });
         
@@ -98,11 +104,16 @@ public class TextCanvasController extends JPanel
                     if (eraser == true){
                         canvas.characterEraser(xDrag, yDrag, eraserSize);
                     }else{
+                        if (xDrag != previousX || yDrag != previousY) {
+                            canvas.nextCharacter();
+                        }
                         canvas.setCharacter(xDrag, yDrag);
                     }
                     canvas.setCharacterColor(xDrag, yDrag);
                     repaint();
                 }
+                previousX = xDrag;
+                previousY = yDrag;
             }
         });
     }
@@ -131,7 +142,7 @@ public class TextCanvasController extends JPanel
             eraser = false;
             String input = JOptionPane.showInputDialog(frame, "Enter a character:");
             if (input != null && !input.isEmpty()) {
-                canvas.setCurrentCharacter(input.charAt(0));
+                canvas.setCurrentCharList(input.toCharArray());
             }
         });
     }
