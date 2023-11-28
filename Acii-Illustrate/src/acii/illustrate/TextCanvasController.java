@@ -105,9 +105,11 @@ public class TextCanvasController extends JPanel
                         canvas.characterEraser(xDrag, yDrag, eraserSize);
                     }else{
                         if (xDrag != previousX || yDrag != previousY) {
+       
+                            canvas.setCharacter(xDrag, yDrag);
                             canvas.nextCharacter();
                         }
-                        canvas.setCharacter(xDrag, yDrag);
+                        
                     }
                     canvas.setCharacterColor(xDrag, yDrag);
                     repaint();
@@ -140,7 +142,7 @@ public class TextCanvasController extends JPanel
     public void addCharActionListener(JButton charSwitchButton, JFrame frame) {
         charSwitchButton.addActionListener(e -> {
             eraser = false;
-            String input = JOptionPane.showInputDialog(frame, "Enter a character:");
+            String input = JOptionPane.showInputDialog(frame, "Enter character(s):");
             if (input != null && !input.isEmpty()) {
                 canvas.setCurrentCharList(input.toCharArray());
             }

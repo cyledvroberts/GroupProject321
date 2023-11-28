@@ -80,7 +80,7 @@ public class Button extends JPanel
         // this stuff creates a jpanel for the buttons
         // and then adds it to the frame. 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(8, 1));
+        buttonPanel.setLayout(new GridLayout(1, 8));
         buttonPanel.add(charSwitchButton);
         buttonPanel.add(eraserButton);
         buttonPanel.add(colorSwitchButton); 

@@ -30,7 +30,7 @@ public class Window
         
         JPanel buttonPanel = Button.createButtons(frame, drawingArea);
         
-        frame.add(buttonPanel, BorderLayout.WEST);
+        frame.add(buttonPanel, BorderLayout.NORTH);
         
         // arbitrary frame size
         frame.setSize(1000, 700); 

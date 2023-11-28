@@ -232,7 +232,7 @@ public class TextCanvasModel
     public void setCurrentCharList(char[] newList) {
         currentCharList = newList;
         currentCharPosition = 0;
-        setCurrentCharacter(newList[0]);
+        nextCharacter();
     }
     
     public void setCurrentColor(Color n){
