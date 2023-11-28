@@ -10,7 +10,9 @@ import java.util.Arrays;
 
 public class TextCanvasModel
 {
-    private static Color currentColor = Color.BLACK; 
+    private static Color currentColor = Color.BLACK;
+    private static char[] currentCharList = {' '};
+    private static int currentCharPosition = 0;
     private static char currentCharacter = ' ';
     private static Color backgroundColor = Color.white;    
     // cellSize is used to change the size of the "cells" that the characters
@@ -217,6 +219,20 @@ public class TextCanvasModel
     
     public void setCurrentCharacter(char n){
         currentCharacter = n;
+    }
+    
+    public void nextCharacter() {
+        setCurrentCharacter(currentCharList[currentCharPosition]);
+        currentCharPosition += 1;
+        if (currentCharPosition == currentCharList.length) {
+            currentCharPosition = 0;
+        }
+    }
+    
+    public void setCurrentCharList(char[] newList) {
+        currentCharList = newList;
+        currentCharPosition = 0;
+        setCurrentCharacter(newList[0]);
     }
     
     public void setCurrentColor(Color n){
