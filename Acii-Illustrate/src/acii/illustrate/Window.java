@@ -1,22 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package acii.illustrate;
-
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Arrays;
-import java.util.ArrayList;
 
+/**
+ * This class is used to create and display the window
+ * 
+ */
 public class Window 
 {
     // create a new text canvas object as a class member so that
     // it can be used in class methods
     private static TextCanvasController drawingArea = new TextCanvasController();
     
+    /**
+     * This method creates and displays a JFrame and adds all of the GUI components
+     */
     public static void Frame()
     {
         // creates the window
