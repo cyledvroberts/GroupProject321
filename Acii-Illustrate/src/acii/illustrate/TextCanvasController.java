@@ -135,8 +135,8 @@ public class TextCanvasController extends JPanel
             }
         });
     }
-public void jpegActionListener(JButton jpegButton, TextCanvasController drawingArea, JFrame frame) {
-    jpegButton.addActionListener(actionEvent -> {
+public void pngActionListener(JButton pngButton, TextCanvasController drawingArea, JFrame frame) {
+    pngButton.addActionListener(actionEvent -> {
         int width = getWidth();
         int height = getHeight();
 
@@ -158,18 +158,18 @@ public void jpegActionListener(JButton jpegButton, TextCanvasController drawingA
             File selectedFile = fileChooser.getSelectedFile();
             filePath = selectedFile.getAbsolutePath();
 
-            // Check if the file name ends with ".jpg", if not, append it
-            if (!filePath.toLowerCase().endsWith(".jpg")) {
-                filePath += ".jpg";
+            // Check if the file name ends with ".png", if not, append it
+            if (!filePath.toLowerCase().endsWith(".png")) {
+                filePath += ".png";
             }
         } else {
             // User canceled the file dialog, use a default path
-            filePath = "file.jpg";
+            filePath = "file.png";
         }
 
-        // Save the image as a JPEG file
+        // Save the image as a PNG file
         try {
-            ImageIO.write(image, "jpg", new File(filePath));
+            ImageIO.write(image, "png", new File(filePath));
             JOptionPane.showMessageDialog(null, "Image saved as " + filePath);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Error saving image: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
