@@ -72,6 +72,8 @@ public class Button extends JPanel
         JButton deleteButton = new JButton("Delete");
         JPopupMenu deleteMenu = new JPopupMenu();
         drawingArea.addDeleteActionListener(deleteButton, deleteMenu, drawingArea, frame);
+        JButton jpegButton = new JButton("Save as Jpeg");
+        drawingArea.jpegActionListener(jpegButton, drawingArea, frame);
         
         // create reset button
         JButton resetButton = new JButton("Reset");
@@ -80,7 +82,7 @@ public class Button extends JPanel
         // this stuff creates a jpanel for the buttons
         // and then adds it to the frame. 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(1, 8));
+        buttonPanel.setLayout(new GridLayout(1, 9));
         buttonPanel.add(charSwitchButton);
         buttonPanel.add(eraserButton);
         buttonPanel.add(colorSwitchButton); 
@@ -89,6 +91,7 @@ public class Button extends JPanel
         buttonPanel.add(loadButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(resetButton);
+        buttonPanel.add(jpegButton);
         
         return buttonPanel;
      }

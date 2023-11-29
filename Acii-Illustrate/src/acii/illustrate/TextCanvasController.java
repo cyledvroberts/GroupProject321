@@ -3,7 +3,13 @@ package acii.illustrate;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Random;
+import java.util.Arrays;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 
 /**
  * This class is the controller class for the application.
@@ -129,7 +135,49 @@ public class TextCanvasController extends JPanel
             }
         });
     }
-    
+public void jpegActionListener(JButton jpegButton, TextCanvasController drawingArea, JFrame frame) {
+    jpegButton.addActionListener(actionEvent -> {
+        int width = getWidth();
+        int height = getHeight();
+
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = image.createGraphics();
+
+        // Render the panel content onto the image
+        paintComponent(g2d);
+
+        // Ask the user for a file path using a JFileChooser
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Image");
+        int userSelection = fileChooser.showSaveDialog(null);
+
+        String filePath;
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            // User selected a file path
+            File selectedFile = fileChooser.getSelectedFile();
+            filePath = selectedFile.getAbsolutePath();
+
+            // Check if the file name ends with ".jpg", if not, append it
+            if (!filePath.toLowerCase().endsWith(".jpg")) {
+                filePath += ".jpg";
+            }
+        } else {
+            // User canceled the file dialog, use a default path
+            filePath = "file.jpg";
+        }
+
+        // Save the image as a JPEG file
+        try {
+            ImageIO.write(image, "jpg", new File(filePath));
+            JOptionPane.showMessageDialog(null, "Image saved as " + filePath);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error saving image: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            g2d.dispose();
+        }
+    });
+}
     /**
      * function that adds actionListener to character button
      * @param charSwitchButton Character JButton that is created in the Button class
