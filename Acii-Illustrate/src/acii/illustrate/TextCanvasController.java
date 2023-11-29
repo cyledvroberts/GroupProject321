@@ -130,7 +130,10 @@ public class TextCanvasController extends JPanel
     public void addColorActionListener(JButton colorSwitchButton, JFrame frame) {
         colorSwitchButton.addActionListener(e -> {
             eraser = false;
-            canvas.setCurrentColor(JColorChooser.showDialog(frame, "Choose a Color", canvas.getCurrentColor()));
+            Color input = JColorChooser.showDialog(frame, "Choose a Color", canvas.getCurrentColor());
+            if (input != null) {
+                canvas.setCurrentColor(input);
+            }
         });
     }
     
@@ -193,7 +196,10 @@ public class TextCanvasController extends JPanel
     public void addBackgroundActionListener(JButton backgroundSwitchButton, JFrame frame, TextCanvasController drawingArea) {
         backgroundSwitchButton.addActionListener(e -> {
             eraser = false;
-            canvas.setBackgroundColor((Color) JColorChooser.showDialog(frame, "Choose a Background Color", canvas.getBackgroundColor()));
+            Color input = JColorChooser.showDialog(frame, "Choose a Color", canvas.getBackgroundColor());
+            if (input != null) {
+                canvas.setBackgroundColor(input);
+            }
             updateBackground();
         });
     }
