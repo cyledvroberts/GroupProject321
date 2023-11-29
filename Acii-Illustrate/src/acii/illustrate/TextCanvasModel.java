@@ -11,27 +11,55 @@ public class TextCanvasModel
 {
     
     /**
-     * Color currentColor stores the color of the characters
-     * 
+     * currentColor stores the color of the characters
      */
     private static Color currentColor = Color.BLACK;
+    
+    /**
+     * currentCharList stores a list of characters that
+     * the user inputs to be drawn on the canvas
+     */
     private static char[] currentCharList = {' '};
+    
+    /**
+     * currentCharPosition stores the index position used with currentCharList
+     */
     private static int currentCharPosition = 0;
+    
+    /**
+     * currentCharacter stores the character that is added to the character grid
+     */
     private static char currentCharacter = ' ';
-    private static Color backgroundColor = Color.white;    
-    // cellSize is used to change the size of the "cells" that the characters
-    // exist in. larger numbers create more space between characters and 
-    // vise versa.
+    
+    /**
+     * backgroundColor stores the color that the background is set to
+     */
+    private static Color backgroundColor = Color.white;
+    
+    /**
+     * cellSize is used to change the size of the "cells" that the characters
+     * exist in. larger numbers create more space between characters and 
+     * vise versa.
+     */
     private int cellSize = 10;
-    // gridCharacters is a 2d array that stores the position of the characters
+    
+    /**
+     * gridCharacters is a 2d array that stores the position of the characters
+     */
     private char[][] gridCharacters;
-    // gridColors is a 2d array that stores the corresponding colors for each
-    // of the characters in the gridCharacters array
+    
+    /**
+     * gridColors is a 2d array that stores the corresponding colors for each
+     * of the characters in the gridCharacters array
+     */
     private Color[][] gridColors;
-        
-    // this is the constructor for a TextCanvas object
-    // it initializes the gridCharacters and gridColors arrays with default values
-    // right now the size of the arrays is hard coded
+    
+    /**
+     * This is the constructor for a TextCanvas object.
+     * It initializes the gridCharacters and gridColors arrays with default values.
+     * @param x number of rows of the character and color arrays
+     * @param y number of columns of the character and color arrays
+     */
     public TextCanvasModel(int x, int y) 
     {
         gridCharacters = new char[x][y];
@@ -48,7 +76,7 @@ public class TextCanvasModel
         }
     }
     
-    // setter functions
+    // setter functions*********************************************************
     
     public void resetTextCanvas(int x, int y){
         
@@ -104,29 +132,7 @@ public class TextCanvasModel
                     }
                 }
                 
-            }
-            
-//            gridCharacters[x - 1][y + 2] = currentCharacter;
-//            gridCharacters[x][y + 2] = currentCharacter;
-//            gridCharacters[x + 1][y + 2] = currentCharacter;
-//            gridCharacters[x - 2][y + 1] = currentCharacter;
-//            gridCharacters[x - 1][y + 1] = currentCharacter;
-//            gridCharacters[x][y + 1] = currentCharacter;
-//            gridCharacters[x + 1][y + 1] = currentCharacter;
-//            gridCharacters[x + 2][y + 1] = currentCharacter;
-//            gridCharacters[x - 2][y] = currentCharacter;
-//            gridCharacters[x - 1][y] = currentCharacter;
-//            gridCharacters[x][y] = currentCharacter;
-//            gridCharacters[x + 1][y] = currentCharacter;
-//            gridCharacters[x + 2][y] = currentCharacter;
-//            gridCharacters[x - 2][y - 1] = currentCharacter;
-//            gridCharacters[x - 1][y - 1] = currentCharacter;
-//            gridCharacters[x][y - 1] = currentCharacter;
-//            gridCharacters[x + 1][y - 1] = currentCharacter;
-//            gridCharacters[x + 2][y - 1] = currentCharacter;
-//            gridCharacters[x - 1][y - 2] = currentCharacter;
-//            gridCharacters[x][y - 2] = currentCharacter;
-//            gridCharacters[x + 1][y - 2] = currentCharacter;   
+            } 
         }
         
         if (size == "Large"){
@@ -178,46 +184,7 @@ public class TextCanvasModel
                         gridCharacters[x + i][y + j] = currentCharacter;
                     }
                 }
-                
             }
-  
-//            gridCharacters[x - 1][y + 3] = currentCharacter;
-//            gridCharacters[x][y + 3] = currentCharacter;
-//            gridCharacters[x + 1][y + 3] = currentCharacter;
-//            gridCharacters[x - 2][y + 2] = currentCharacter;
-//            gridCharacters[x - 1][y + 2] = currentCharacter;
-//            gridCharacters[x][y + 2] = currentCharacter;
-//            gridCharacters[x + 1][y + 2] = currentCharacter;
-//            gridCharacters[x + 2][y + 2] = currentCharacter;
-//            gridCharacters[x - 3][y + 1] = currentCharacter;
-//            gridCharacters[x - 2][y + 1] = currentCharacter;
-//            gridCharacters[x - 1][y + 1] = currentCharacter;
-//            gridCharacters[x][y + 1] = currentCharacter;
-//            gridCharacters[x + 1][y + 1] = currentCharacter;
-//            gridCharacters[x + 2][y + 1] = currentCharacter;
-//            gridCharacters[x + 3][y + 1] = currentCharacter;
-//            gridCharacters[x - 3][y] = currentCharacter;
-//            gridCharacters[x - 2][y] = currentCharacter;
-//            gridCharacters[x - 1][y] = currentCharacter;
-//            gridCharacters[x][y] = currentCharacter;
-//            gridCharacters[x + 1][y] = currentCharacter;
-//            gridCharacters[x + 2][y] = currentCharacter;
-//            gridCharacters[x + 3][y] = currentCharacter;
-//            gridCharacters[x - 3][y - 1] = currentCharacter;
-//            gridCharacters[x - 2][y - 1] = currentCharacter;
-//            gridCharacters[x - 1][y - 1] = currentCharacter;
-//            gridCharacters[x][y - 1] = currentCharacter;
-//            gridCharacters[x + 1][y - 1] = currentCharacter;
-//            gridCharacters[x + 2][y - 1] = currentCharacter;
-//            gridCharacters[x + 3][y - 1] = currentCharacter;
-//            gridCharacters[x - 2][y - 2] = currentCharacter;
-//            gridCharacters[x - 1][y - 2] = currentCharacter;
-//            gridCharacters[x][y - 2] = currentCharacter;
-//            gridCharacters[x + 1][y - 2] = currentCharacter;
-//            gridCharacters[x + 2][y - 2] = currentCharacter;
-//            gridCharacters[x - 1][y - 3] = currentCharacter;
-//            gridCharacters[x][y - 3] = currentCharacter;
-//            gridCharacters[x + 1][y - 3] = currentCharacter;
         }
     }
     
