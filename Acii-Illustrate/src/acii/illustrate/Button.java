@@ -72,6 +72,8 @@ public class Button extends JPanel
         JButton deleteButton = new JButton("Delete");
         JPopupMenu deleteMenu = new JPopupMenu();
         drawingArea.addDeleteActionListener(deleteButton, deleteMenu, drawingArea, frame);
+        JButton jpegButton = new JButton("Save as Jpeg");
+        drawingArea.jpegActionListener(jpegButton, drawingArea, frame);
         
         // create reset button
         JButton resetButton = new JButton("Reset");
@@ -89,6 +91,7 @@ public class Button extends JPanel
         buttonPanel.add(loadButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(resetButton);
+        buttonPanel.add(jpegButton);
         
         return buttonPanel;
      }
