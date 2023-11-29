@@ -1,15 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package acii.illustrate;
-
 
 import java.awt.*;
 import java.util.Arrays;
 
+/**
+ * This class handles the data structures and operations that make up the
+ * model of the program.
+ */
 public class TextCanvasModel
 {
+    
+    /**
+     * Color currentColor stores the color of the characters
+     * 
+     */
     private static Color currentColor = Color.BLACK;
     private static char[] currentCharList = {' '};
     private static int currentCharPosition = 0;
