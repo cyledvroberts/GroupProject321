@@ -1,20 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package acii.illustrate;
 
-/**
- *
- * @author Cyle
- */
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+
+/**
+ * This class creates all of the buttons and button menus
+ */
 public class Button extends JPanel
 {
+    
+    /**
+     * This function creates all of the buttons and adds them to a JPanel
+     * @param frame JFrame that contains all of the GUI elements
+     * @param drawingArea TextCanvasController object that is added as a component to the main JFrame
+     * @return buttonPanel JPanel object that contains all of the buttons
+     */
      public static JPanel createButtons(JFrame frame, TextCanvasController drawingArea)
      {
         // creates a button for changing the text colors using an action listener.
@@ -96,19 +97,28 @@ public class Button extends JPanel
         return buttonPanel;
      }
      
-     // Function used to update the popup menu for loading a
-    // saved canvas. It uses the ArrayList of saved file names
-    // to create menu buttons with those names and adds them to
-    // the popup menu linked to the load button
+    /**
+     * Function used to update the popup menu for loading a
+     * saved canvas. It uses the ArrayList of saved file names
+     * to create menu buttons with those names and adds them to
+     * the popup menu linked to the load button.
+     * @param menu JPopupMenu object that functions as the menu for the load button
+     * @param drawingArea TextCanvasController object that is added as a component to the main JFrame
+     * @param frame JFrame that contains all of the GUI elements
+     */ 
     public static void updateLoadMenu(JPopupMenu menu, TextCanvasController drawingArea, JFrame frame){
+        
+        // creates an array list of the names of all current save files
         ArrayList<String> savedNames = drawingArea.getSavesList();
+        
+        // if the save names list is not empty...
         if (!savedNames.isEmpty()){
+            
+            // iterate through the save names list, creating a menu button for each name
+            // along with a button listener to load the appropriate file
             for (String name : savedNames){
                 JMenuItem menuItem = new JMenuItem(name.substring(0, name.length() - 4));
                 menuItem.addActionListener( e -> {  
-                    
-                    // need to figure out how to set parent component to the frame here so that
-                    // the dialog box is in the middle of the window
                     JOptionPane.showMessageDialog(frame, "Loading " + name.substring(0, name.length() - 4));
                     drawingArea.loadCanvas(name);
                     drawingArea.setBackground(drawingArea.getBackgroundColor());
@@ -116,14 +126,21 @@ public class Button extends JPanel
                 });
                 menu.add(menuItem);
             }
+        
+        // if the save names list is empty, display "no saved canvas"
         }else{
             JOptionPane.showMessageDialog(frame, "No Saved Canvas");
         }
     }
     
-    // Function used to update the delete popup menu
-    // Creates menu items based on the saved file names similar
-    // to updateLoadMenu
+    /**
+     * Function used to update the delete popup menu.
+     * Creates menu items based on the saved file names similar
+     * to updateLoadMenu().
+     * @param menu JPopupMenu object that functions as the menu for the delete button
+     * @param drawingArea TextCanvasController object that is added as a component to the main JFrame
+     * @param frame JFrame that contains all of the GUI elements
+     */
     public static void updateDeleteMenu(JPopupMenu menu, TextCanvasController drawingArea, JFrame frame){
         ArrayList<String> savedNames = drawingArea.getSavesList();
         if (!savedNames.isEmpty()){
@@ -145,6 +162,14 @@ public class Button extends JPanel
         }
     }
     
+    /**
+     * Function used to update the save pop up menu.
+     * Creates menu items based on the saved file names similar to
+     * updateLoadMenu() and updateDeleteMenu().
+     * @param menu JPopupMenu object that functions as the menu for the save button
+     * @param drawingArea TextCanvasController object that is added as a component to the main JFrame
+     * @param frame JFrame that contains all of the GUI elements
+     */
     public static void updateSaveMenu(JPopupMenu menu, TextCanvasController drawingArea, JFrame frame){
         ArrayList<String> savedNames = drawingArea.getSavesList();
         if (!savedNames.isEmpty()){

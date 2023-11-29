@@ -11,8 +11,8 @@ import javax.imageio.ImageIO;
 
 /**
  * This class is the controller class for the application.
- *  It creates all of the mouseListeners and actionListeners and controls functions that modify information.
- * @author obrya
+ * It creates all of the mouseListeners and actionListeners and 
+ * controls functions that modify information.
  */
 public class TextCanvasController extends JPanel
 {
@@ -50,6 +50,10 @@ public class TextCanvasController extends JPanel
      */
     private boolean eraser = false;
     
+    /**
+     * previousX and previousY stores mouse cursor locations and are
+     * used to determine whether or not the mouse position has changed
+     */
     private int previousX = 0;
     private int previousY = 0;
     
@@ -59,9 +63,13 @@ public class TextCanvasController extends JPanel
     public TextCanvasController()
     {   
         
+        /**
+         * This adds a mouse listener that handles single mouse clicks
+         */
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                
                 // xPress and yPress stores the x and y coordinates of the mouse
                 // gotten from .getX() and .getY(). Dividing these by cellSize
                 // here keeps the mouse position accurate to where the character
@@ -69,6 +77,7 @@ public class TextCanvasController extends JPanel
                 // is also scaled by cellSize later.
                 int xPress = e.getX() / canvas.getCellSize();
                 int yPress = e.getY() / canvas.getCellSize();
+                
                 // if the x and y coordinates are greater than 0 but less than
                 // the size of the text canvas,
                 // the current character and color are copied to the appropriate locations
@@ -76,22 +85,34 @@ public class TextCanvasController extends JPanel
                 // repaint() is called to instantly redraw the text canvas for
                 // the user.
                 if (xPress >= 0 && xPress < ROW && yPress >= 0 && yPress < COL) {
+                    
+                    // if the eraser is active, run eraser operation
                     if (eraser == true){
                         canvas.characterEraser(xPress, yPress, eraserSize);
+                    
+                    // else, set the appropriate character and adjust index position
+                    // of the character list
                     }else{
                         canvas.setCharacter(xPress, yPress);
                         canvas.nextCharacter();
                     }
+                    
+                    // set the character color and call repaint() to display the
+                    // information in the jpanel
                     canvas.setCharacterColor(xPress, yPress);
                     repaint();
                 }
+                
+                // update previous mouse position variables
                 previousX = xPress;
                 previousY = yPress;
             }
         });
         
-        // This function handles dragging the mouse while pressed and works
-        // the exact same way as the previous function.
+        /**
+         * This adds a mouse listener that handles dragging the mouse. It
+         * functions similarly to the single click mouse listener
+         */
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -101,6 +122,9 @@ public class TextCanvasController extends JPanel
                     if (eraser == true){
                         canvas.characterEraser(xDrag, yDrag, eraserSize);
                     }else{
+                        
+                        // if the mouse position has changed, set the appropriate
+                        // character and adjust the index position of the character list
                         if (xDrag != previousX || yDrag != previousY) {
        
                             canvas.setCharacter(xDrag, yDrag);
@@ -133,49 +157,57 @@ public class TextCanvasController extends JPanel
             }
         });
     }
-public void pngActionListener(JButton pngButton, TextCanvasController drawingArea, JFrame frame) {
-    pngButton.addActionListener(actionEvent -> {
-        int width = getWidth();
-        int height = getHeight();
+    
+    /**
+     * function that adds actionListener to the save as .png button
+     * @param pngButton JButton that is created in the Button class and used to save canvas as .png
+     * @param drawingArea TextCanvasController object that is added as a component to the main JFrame
+     * @param frame JFrame that contains all GUI components
+     */
+    public void pngActionListener(JButton pngButton, TextCanvasController drawingArea, JFrame frame) {
+        pngButton.addActionListener(actionEvent -> {
+            int width = getWidth();
+            int height = getHeight();
 
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2d = image.createGraphics();
+            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2d = image.createGraphics();
 
-        // Render the panel content onto the image
-        paintComponent(g2d);
+            // Render the panel content onto the image
+            paintComponent(g2d);
 
-        // Ask the user for a file path using a JFileChooser
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Save Image");
-        int userSelection = fileChooser.showSaveDialog(null);
+            // Ask the user for a file path using a JFileChooser
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Save Image");
+            int userSelection = fileChooser.showSaveDialog(null);
 
-        String filePath;
+            String filePath;
 
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            // User selected a file path
-            File selectedFile = fileChooser.getSelectedFile();
-            filePath = selectedFile.getAbsolutePath();
+            if (userSelection == JFileChooser.APPROVE_OPTION) {
+                // User selected a file path
+                File selectedFile = fileChooser.getSelectedFile();
+                filePath = selectedFile.getAbsolutePath();
 
-            // Check if the file name ends with ".png", if not, append it
-            if (!filePath.toLowerCase().endsWith(".png")) {
-                filePath += ".png";
+                // Check if the file name ends with ".png", if not, append it
+                if (!filePath.toLowerCase().endsWith(".png")) {
+                    filePath += ".png";
+                }
+            } else {
+                // User canceled the file dialog, use a default path
+                filePath = "file.png";
             }
-        } else {
-            // User canceled the file dialog, use a default path
-            filePath = "file.png";
-        }
 
-        // Save the image as a PNG file
-        try {
-            ImageIO.write(image, "png", new File(filePath));
-            JOptionPane.showMessageDialog(null, "Image saved as " + filePath);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Error saving image: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            g2d.dispose();
-        }
-    });
-}
+            // Save the image as a PNG file
+            try {
+                ImageIO.write(image, "png", new File(filePath));
+                JOptionPane.showMessageDialog(null, "Image saved as " + filePath);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Error saving image: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                g2d.dispose();
+            }
+        });
+    }
+    
     /**
      * function that adds actionListener to character button
      * @param charSwitchButton Character JButton that is created in the Button class
@@ -183,7 +215,10 @@ public void pngActionListener(JButton pngButton, TextCanvasController drawingAre
      */
     public void addCharActionListener(JButton charSwitchButton, JFrame frame) {
         charSwitchButton.addActionListener(e -> {
+            // turn off eraser
             eraser = false;
+            // get character or string choice from listener and use it to set
+            // the current character list
             String input = JOptionPane.showInputDialog(frame, "Enter character(s):");
             if (input != null && !input.isEmpty()) {
                 canvas.setCurrentCharList(input.toCharArray());
@@ -198,6 +233,9 @@ public void pngActionListener(JButton pngButton, TextCanvasController drawingAre
      * @param eraserLarge menu item to toggle large eraser on cursor
      */
     public void addEraserItemActionListener(JMenuItem eraserSmall, JMenuItem eraserMedium, JMenuItem eraserLarge){
+        
+        // turns on and sets size of eraser and sets current character to an
+        // empty space
         eraserSmall.addActionListener (e -> {
            eraser = true;
            eraserSize = "Small";
@@ -216,7 +254,7 @@ public void pngActionListener(JButton pngButton, TextCanvasController drawingAre
     }
     
     /**
-     * function that adds actionListener to Eraser button
+     * function that adds actionListener to Eraser button. 
      * @param menu menu that contains eraser size options
      * @param eraserButton Eraser JButton that is created in the Button class
      */
@@ -252,14 +290,24 @@ public void pngActionListener(JButton pngButton, TextCanvasController drawingAre
     public void addSaveMenuItemActionListener(JMenuItem saveItem, JFrame frame, TextCanvasController drawingArea) {
         saveItem.addActionListener (e -> {
             String input = JOptionPane.showInputDialog(frame, "Enter the name of your canvas:");
+            
+            // if input is not null...
             if (input != null){
+                
+                // if input name is already in saves list...
                 if (drawingArea.isInSavesList(input)){
+                    
+                    // choose whether to overwrite save or cancel
                     int choice = JOptionPane.showConfirmDialog(frame, "The canvas already exists. Would you like to overwrite?");
+                    
+                    // if choosing to overwrite, save canvas normally
                     if (choice == 0){
                     drawingArea.saveCanvas(input);
                     JOptionPane.showMessageDialog(frame, "Canvas has been saved");
                     setCurrentCanvas(input + ".txt"); 
                     }
+                
+                // if input name is not in saves list, save normally
                 }else {
                 drawingArea.saveCanvas(input);
                 JOptionPane.showMessageDialog(frame, "Canvas has been saved");

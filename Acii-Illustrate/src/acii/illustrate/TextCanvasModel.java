@@ -78,6 +78,11 @@ public class TextCanvasModel
     
     // setter functions*********************************************************
     
+    /**
+     * This function resets the text canvas to the default state
+     * @param x the number of rows in the character array
+     * @param y the number of columns in the character array
+     */
     public void resetTextCanvas(int x, int y){
         
         currentCharacter = ' ';
@@ -95,7 +100,13 @@ public class TextCanvasModel
         }
     }
     
-    // function used for erasing
+    /**
+     * This function is used for erasing characters from the character grid.
+     * characters are erased in a circular area around the mouse position.
+     * @param x the x-position of the mouse
+     * @param y the y-position of the mouse
+     * @param size the size of the eraser
+     */
     public void characterEraser(int x, int y, String size){
         
         // used for detecting if out of bounds
@@ -188,71 +199,150 @@ public class TextCanvasModel
         }
     }
     
+    /**
+     * This function updates the currentCharacter variable, which is used to
+     * update the character grid
+     * @param n character to set as currentCharacter
+     */
     public void setCurrentCharacter(char n){
         currentCharacter = n;
     }
     
+    /**
+     * This function sets the current character as the character at the current index value in the character
+     * list. It then increments the index position of the character list by one.
+     */
     public void nextCharacter() {
         setCurrentCharacter(currentCharList[currentCharPosition]);
         currentCharPosition += 1;
+        
+        // if the index position is at the end of the character list, reset 
+        // index position to 0.
         if (currentCharPosition == currentCharList.length) {
             currentCharPosition = 0;
         }
     }
     
+    /**
+     * This function sets the currentCharList to a given list
+     * @param newList char[] list used to set the current character list
+     */
     public void setCurrentCharList(char[] newList) {
         currentCharList = newList;
+        // initialize index position to 0.
         currentCharPosition = 0;
+        
+        // nextCharacter() is used here to set the initial character and increment
+        // the index position. It's use here fixed a bug where characters were not
+        // switching correctly when word wrapping
         nextCharacter();
     }
     
+    /**
+     * This function sets the current color of the character
+     * @param n color used to set current color
+     */
     public void setCurrentColor(Color n){
         currentColor = n;
     }
-
+    
+    /**
+     * This function sets the background color
+     * @param n color used to set the background color
+     */
     public void setBackgroundColor(Color n){
         backgroundColor = n;
     }
     
+    /**
+     * This function sets a character at the given coordinates in the character grid 
+     * to the current character
+     * @param x row to set the current character
+     * @param y column to set the current character
+     */
     public void setCharacter(int x, int y){
         gridCharacters[x][y] = currentCharacter;
     }
     
+    /**
+     * This function sets the cell size which is used to scale the distance between
+     * the characters that are drawn on the canvas
+     * @param x integer to set the cell size
+     */
     public void setCellSize(int x){
         cellSize = x;
     }
     
+    /**
+     * This function sets the color at the given coordinates in the color grid to
+     * the current color
+     * @param x row to set the current color
+     * @param y column to set the current color
+     */
     public void setCharacterColor(int x, int y){
         gridColors[x][y] = currentColor;
     }
     
+    /**
+     * This function loads a canvas by copying temporary loaded character and color
+     * arrays, as well as the background color, to the variables used for the
+     * displayed canvas
+     * @param characters 2d array of characters to copy to the gridCharacters array
+     * @param colors 2d array of colors to copy to the gridColors array
+     * @param background color to copy to backgroundColor
+     */
     public void loadCanvas(char[][] characters, Color[][] colors, Color background){
         gridCharacters = characters;
         gridColors = colors;
         backgroundColor = background;
     }
-    // getter functions
+    // getter functions*********************************************************
+    
+    /**
+     * Function to get the value of the current character
+     * @return currentCharacter character value
+     */
     public char getCurrentCharacter(){
         return currentCharacter;
     }
     
+    /**
+     * Function to get the value of the current color
+     * @return currentColor color value
+     */
     public Color getCurrentColor(){
         return currentColor;
     }
     
+    /**
+     * Function to get the value of the current background color
+     * @return backgroundColor color value
+     */
     public Color getBackgroundColor()
     {
         return backgroundColor;
     }
     
+    /**
+     * Function to get the value of the current cell size
+     * @return cellSize integer value
+     */
     public int getCellSize(){
         return cellSize;
     }
     
+    /**
+     * Function to return the character grid
+     * @return gridCharacters 2d array of characters
+     */
     public char[][] getCharacters(){
         return gridCharacters;
     }
     
+    /**
+     * Function to return the color grid
+     * @return gridColors 2d array of colors
+     */
     public Color[][] getCharacterColors(){
         return gridColors;
     }
