@@ -1,5 +1,8 @@
 package acii.illustrate;
-
+// https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/imageio/ImageIO.html
+// https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JFileChooser.html
+// https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Graphics2D.html
+// resourses used for the converting to png.
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
