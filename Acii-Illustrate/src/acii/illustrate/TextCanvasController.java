@@ -164,36 +164,33 @@ public class TextCanvasController extends JPanel
      * @param drawingArea TextCanvasController object that is added as a component to the main JFrame
      * @param frame JFrame that contains all GUI components
      */
-    public void pngActionListener(JButton pngButton, TextCanvasController drawingArea, JFrame frame) {
-        pngButton.addActionListener(actionEvent -> {
-            int width = getWidth();
-            int height = getHeight();
+public void pngActionListener(JButton pngButton, TextCanvasController drawingArea, JFrame frame) {
+    pngButton.addActionListener(actionEvent -> {
+        int width = getWidth();
+        int height = getHeight();
 
-            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-            Graphics2D g2d = image.createGraphics();
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = image.createGraphics();
 
-            // Render the panel content onto the image
-            paintComponent(g2d);
+        // Render the panel content onto the image
+        paintComponent(g2d);
 
-            // Ask the user for a file path using a JFileChooser
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Save Image");
-            int userSelection = fileChooser.showSaveDialog(null);
+        // Ask the user for a file path using a JFileChooser
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Image");
 
+        int userSelection = fileChooser.showSaveDialog(null);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
             String filePath;
 
-            if (userSelection == JFileChooser.APPROVE_OPTION) {
-                // User selected a file path
-                File selectedFile = fileChooser.getSelectedFile();
-                filePath = selectedFile.getAbsolutePath();
+            // User selected a file path
+            File selectedFile = fileChooser.getSelectedFile();
+            filePath = selectedFile.getAbsolutePath();
 
-                // Check if the file name ends with ".png", if not, append it
-                if (!filePath.toLowerCase().endsWith(".png")) {
-                    filePath += ".png";
-                }
-            } else {
-                // User canceled the file dialog, use a default path
-                filePath = "file.png";
+            // Check if the file name ends with ".png", if not, append it
+            if (!filePath.toLowerCase().endsWith(".png")) {
+                filePath += ".png";
             }
 
             // Save the image as a PNG file
@@ -205,8 +202,9 @@ public class TextCanvasController extends JPanel
             } finally {
                 g2d.dispose();
             }
-        });
-    }
+        }
+    });
+}
     
     /**
      * function that adds actionListener to character button
