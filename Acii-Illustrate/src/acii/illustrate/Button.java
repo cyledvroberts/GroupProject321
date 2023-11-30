@@ -184,6 +184,8 @@ public class Button extends JPanel
             }
         }
         JMenuItem menuItem = new JMenuItem("New Save");
+        Font boldFont = new Font(menuItem.getFont().getFamily(), Font.BOLD, 16);
+        menuItem.setFont(boldFont);
         drawingArea.addSaveMenuItemActionListener(menuItem, frame, drawingArea);
         menu.add(menuItem);
     }
